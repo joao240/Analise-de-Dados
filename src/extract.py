@@ -1,44 +1,42 @@
 import pandas as pd
 
-# Ler o arquivo CSV com pandas.
+def extract_data():
+    # Ler o arquivo CSV com pandas.
+    df = pd.read_csv('sales_data_sample.csv', encoding='latin-1') # encoding definido prara evitar erros
+    print(df.head())
+    
+    # Lidando com contagem de valores ausentes
+    print("Valores ausentes por coluna:")
+    print(df.isnull().sum())
 
-df = pd.read_csv('sales_data_sample.csv', encoding='latin-1') # encoding definido prara evitar erros
-print(df.head())
+    # Validar e converter tipos de dados
+    extract_data['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'])
 
-# mostra colunas com seus dtypes
-print(df.dtypes)
+    df['MONTH_ID'] = df['MONTH_ID'].astype(int)
 
+    df['YEAR_ID'] = df['YEAR_ID'].astype(int)
 
-# Lidando com contagem de valores ausentes
-print("Valores ausentes por coluna:")
-print(df.isnull().sum())
+    df['PRODUCTLINE'] = df['PRODUCTLINE'].astype('category')
 
-# Validar e converter tipos de dados
-df['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'])
+    df['STATUS'] = df['STATUS'].astype('category')
 
-df['MONTH_ID'] = df['MONTH_ID'].astype(int)
+    df['CUSTOMERNAME'] = df['CUSTOMERNAME'].astype(str)
 
-df['YEAR_ID'] = df['YEAR_ID'].astype(int)
+    df['CITY'] = df['CITY'].astype(str)
 
-df['PRODUCTLINE'] = df['PRODUCTLINE'].astype('category')
+    df['STATE'] = df['STATE'].astype(str)
 
-df['STATUS'] = df['STATUS'].astype('category')
+    df['COUNTRY'] = df['COUNTRY'].astype(str)
 
-df['CUSTOMERNAME'] = df['CUSTOMERNAME'].astype(str)
+    df['TERRITORY'] = df['TERRITORY'].astype(str)
 
-df['CITY'] = df['CITY'].astype(str)
+    df['CONTACTLASTNAME'] = df['CONTACTLASTNAME'].astype(str)
 
-df['STATE'] = df['STATE'].astype(str)
+    df['CONTACTFIRSTNAME'] = df['CONTACTFIRSTNAME'].astype(str)
 
-df['COUNTRY'] = df['COUNTRY'].astype(str)
+    df['DEALSIZE'] = df['DEALSIZE'].astype(str)
 
-df['TERRITORY'] = df['TERRITORY'].astype(str)
+    print("\nNOME E TIPO: =========================")
+    print(df.dtypes)
 
-df['CONTACTLASTNAME'] = df['CONTACTLASTNAME'].astype(str)
-
-df['CONTACTFIRSTNAME'] = df['CONTACTFIRSTNAME'].astype(str)
-
-df['DEALSIZE'] = df['DEALSIZE'].astype(str)
-
-print("\nNOME E TIPO: =========================")
-print(df.dtypes)
+    return df
