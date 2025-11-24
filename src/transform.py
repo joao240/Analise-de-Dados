@@ -33,4 +33,9 @@ def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
         (df['PRICEEACH'] <= alto_preco)
     ]  
 
+
+    for df in df.columns:
+        df['ADDRESSLINE2'] = df['ADDRESSLINE2'].fillna('Unknown')
+    
+    
     return df
