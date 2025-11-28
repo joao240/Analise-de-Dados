@@ -10,7 +10,7 @@ def extract_data():
     print(df.isnull().sum())
 
     # Validar e converter tipos de dados
-    extract_data['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'])
+    df['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'], errors='coerce')
 
     df['MONTH_ID'] = df['MONTH_ID'].astype(int)
 

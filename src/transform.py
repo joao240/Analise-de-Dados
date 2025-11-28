@@ -31,12 +31,25 @@ def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
         (df['PRICEEACH'] <= alto_preco)
     ].copy()  
 
-    # Preencher valores vazios em todas as colunas
-    for col in df.columns:
-        df[col] = df[col].fillna('Unknown')
-    
-    # Normalizar nomes dos produtos (lowercase, trim espaços)
-    for col in df.columns:
-        if df[col].dtype == 'object':
-            df[col] = df[col].astype(str).str.lower().str.strip()   
+    # Preencher valores vazios de forma segura
+    # Números -> mediana
+    for col in df.select_dtypes(include=['number']).columns:
+        if df[col].isna().any():
+            df[col] = df[col].fillna(df[col].median())
+
+    # Categóricas -> adicionar categoria 'Unknown' e preencher
+    for col in df.select_dtypes(include=['category']).columns:
+        df[col] = df[col].cat.add_categories(['Unknown'])
+        if df[col].isna().any():
+            df[col] = df[col].fillna('Unknown')
+
+    # Objetos/texto -> 'Unknown'
+    for col in df.select_dtypes(include=['object']).columns:
+        if df[col].isna().any():
+            df[col] = df[col].fillna('Unknown')
+
+    # Normalizar textos (lowercase e strip) nas colunas de texto/categoria
+    for col in df.select_dtypes(include=['object', 'category']).columns:
+        df[col] = df[col].astype(str).str.lower().str.strip()
+
     return df
