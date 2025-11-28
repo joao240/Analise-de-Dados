@@ -3,8 +3,6 @@ import pandas as pd
 
 def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
 
-    
-
     # Calcular o valor total do pedido e colocando no DataFrame
     quantidade = pd.to_numeric(df.get('QUANTITYORDERED'), errors='coerce')
     preco = pd.to_numeric(df.get('PRICEEACH'), errors='coerce')
@@ -31,11 +29,14 @@ def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
         (df['QUANTITYORDERED'] <= alto_qtd) &
         (df['PRICEEACH'] >= baixo_preco) &
         (df['PRICEEACH'] <= alto_preco)
-    ]  
+    ].copy()  
 
-
-    for df in df.columns:
-        df['ADDRESSLINE2'] = df['ADDRESSLINE2'].fillna('Unknown')
+    # Preencher valores vazios em todas as colunas
+    for col in df.columns:
+        df[col] = df[col].fillna('Unknown')
     
-    
+    # Normalizar nomes dos produtos (lowercase, trim espaços)
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].astype(str).str.lower().str.strip()   
     return df
