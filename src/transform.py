@@ -1,12 +1,13 @@
 import pandas as pd
 
-
-def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
-
+def calculation_total_value(df: pd.DataFrame) -> pd.DataFrame:
     # Calcular o valor total do pedido e colocando no DataFrame
     quantidade = pd.to_numeric(df.get('QUANTITYORDERED'), errors='coerce')
     preco = pd.to_numeric(df.get('PRICEEACH'), errors='coerce')
     df['TOTAL_VALUE'] = quantidade * preco
+    return df
+
+def Addressing_outliers(df: pd.DataFrame) -> pd.DataFrame:
 
     # Tratar outliers.
     # ---- OUTLIERS QUANTITYORDERED ----
@@ -29,8 +30,10 @@ def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
         (df['QUANTITYORDERED'] <= alto_qtd) &
         (df['PRICEEACH'] >= baixo_preco) &
         (df['PRICEEACH'] <= alto_preco)
-    ].copy()  
+    ].copy()
 
+    return df
+def handle_empty_values(df: pd.DataFrame) -> pd.DataFrame:
     # Preencher valores vazios de forma segura
     # Números -> mediana
     for col in df.select_dtypes(include=['number']).columns:
@@ -53,3 +56,5 @@ def transform_data(df: pd.DataFrame, inplace: bool = True) -> pd.DataFrame:
         df[col] = df[col].astype(str).str.lower().str.strip()
 
     return df
+
+
