@@ -3,12 +3,14 @@ import pandas as pd
 def extract_data():
     # Ler o arquivo CSV com pandas.
     df = pd.read_csv('sales_data_sample.csv', encoding='latin-1') # encoding definido prara evitar erros
-    print(df.head())
-    
+    return df
+
+def missing_values(df: pd.DataFrame):
     # Lidando com contagem de valores ausentes
     print("Valores ausentes por coluna:")
     print(df.isnull().sum())
 
+def validate_and_convert_types(df: pd.DataFrame) -> pd.DataFrame:
     # Validar e converter tipos de dados
     df['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'], errors='coerce')
 
@@ -35,8 +37,4 @@ def extract_data():
     df['CONTACTFIRSTNAME'] = df['CONTACTFIRSTNAME'].astype(str)
 
     df['DEALSIZE'] = df['DEALSIZE'].astype(str)
-
-    print("\nNOME E TIPO: =========================")
-    print(df.dtypes)
-
     return df
