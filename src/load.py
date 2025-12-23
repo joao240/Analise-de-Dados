@@ -23,7 +23,7 @@ def load_to_mysql(
     df.to_sql(
         name=table_name,
         con=engine,
-        if_exists=if_exists,  # replace | append
+        if_exists=if_exists,
         index=False
     )
 
