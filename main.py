@@ -1,6 +1,7 @@
 from src.extract import extract_data, missing_values, validate_and_convert_types
 from src.transform import calculation_total_value, Addressing_outliers, handle_empty_values
 from src.load import load_to_mysql
+from src.analysis import total_value, produtos_mais_vendidos, paises_com_mais_vendas, evolucao_vendas_mensal, ticket_medio
 
 def main():
     # EXTRACT
@@ -23,6 +24,14 @@ def main():
         table_name="sales",
         if_exists="replace"
     )
+
+    # ANALYSIS
+    total_value(df)
+    produtos_mais_vendidos(df)
+    paises_com_mais_vendas(df)
+    evolucao_vendas_mensal(df)
+    ticket_medio(df)
+    
 
 if __name__ == "__main__":
     main()
